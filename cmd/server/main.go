@@ -1,9 +1,7 @@
 package main
 
+import "github.com/cidery/cider/src/infrastructure/application"
+
 func main() {
-	// server will:
-	// - host api
-	// - persist state
-	// - manage watchers and agents
-	// - host a queue of build
+	application.NewApplication().Run()
 }
