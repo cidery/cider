@@ -6,11 +6,11 @@ import (
 )
 
 type Watcher struct {
-	id           uuid.UUID
-	class        string
-	scope        string
-	registeredAt time.Time
-	lastUpdated  time.Time
+	id            uuid.UUID
+	class         string
+	scope         string
+	registeredAt  time.Time
+	lastUpdatedAt time.Time
 }
 
 func NewWatcher(id uuid.UUID, class, scope string, registeredAt time.Time) *Watcher {
@@ -18,7 +18,7 @@ func NewWatcher(id uuid.UUID, class, scope string, registeredAt time.Time) *Watc
 }
 
 func (w *Watcher) TrackUpdate(when time.Time) {
-	w.lastUpdated = when
+	w.lastUpdatedAt = when
 }
 
 func (w *Watcher) Class() string {
@@ -27,4 +27,16 @@ func (w *Watcher) Class() string {
 
 func (w *Watcher) Scope() string {
 	return w.scope
+}
+
+func (w *Watcher) Id() uuid.UUID {
+	return w.id
+}
+
+func (w *Watcher) RegisteredAt() time.Time {
+	return w.registeredAt
+}
+
+func (w *Watcher) LastUpdatedAt() time.Time {
+	return w.lastUpdatedAt
 }

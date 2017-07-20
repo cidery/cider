@@ -18,7 +18,7 @@ func NewWatcherController(registry *service.WatcherRegistry) *WatcherController 
 
 func (w *WatcherController) Bind(engine *gin.Engine) {
 	engine.POST("/watchers/register", w.watchersRegister)
-	//engine.GET("/watchers/list", w.watchersList)
+	engine.GET("/watchers/list", w.watchersList)
 }
 
 func (w *WatcherController) watchersRegister(c *gin.Context) {
@@ -26,7 +26,7 @@ func (w *WatcherController) watchersRegister(c *gin.Context) {
 	decoder := json.NewDecoder(c.Request.Body)
 
 	if err := decoder.Decode(&r); nil != err {
-		c.JSON(500, response.NewErrorResponse(err))
+		c.JSON(400, response.NewErrorResponse(err))
 		return
 	}
 
@@ -36,4 +36,8 @@ func (w *WatcherController) watchersRegister(c *gin.Context) {
 	}
 
 	c.JSON(200, response.NewEmptyResponse())
+}
+
+func (w *WatcherController) watchersList(c *gin.Context) {
+	c.JSON(200, response.NewWatcherListResponse(w.registry.Watchers()))
 }
