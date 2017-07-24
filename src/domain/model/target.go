@@ -1,6 +1,13 @@
 package model
 
 type BuildTarget struct {
-	Type     string
+	Action   string
 	Location string
+}
+
+func NewBuildTarget(action, location string) BuildTarget {
+	return BuildTarget{
+		action,
+		location,
+	}
 }

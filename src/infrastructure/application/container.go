@@ -10,11 +10,15 @@ import (
 )
 
 const (
-	l_database           = "database"
+	l_project_controller = "project_controller"
 	l_watcher_controller = "watcher_controller"
-	l_watcher_registry   = "watcher_registry"
-	l_logger             = "logger"
-	l_time_provider      = "time_provider"
+
+	l_project_registry = "project_registry"
+	l_watcher_registry = "watcher_registry"
+
+	l_database      = "database"
+	l_logger        = "logger"
+	l_time_provider = "time_provider"
 )
 
 type container struct {
@@ -53,6 +57,17 @@ func (c *container) WatcherController() *controllers.WatcherController {
 	return s.(*controllers.WatcherController)
 }
 
+func (c *container) ProjectController() *controllers.ProjectController {
+	s := c.createOrGet(
+		l_project_controller,
+		func() (interface{}, error) {
+			return controllers.NewProjectController(c.ProjectRegistry()), nil
+		},
+	)
+
+	return s.(*controllers.ProjectController)
+}
+
 func (c *container) WatcherRegistry() *service.WatcherRegistry {
 	s := c.createOrGet(
 		l_watcher_registry,
@@ -62,6 +77,17 @@ func (c *container) WatcherRegistry() *service.WatcherRegistry {
 	)
 
 	return s.(*service.WatcherRegistry)
+}
+
+func (c *container) ProjectRegistry() *service.ProjectRegistry {
+	s := c.createOrGet(
+		l_project_registry,
+		func() (interface{}, error) {
+			return service.NewProjectRegistry(c.TimeProvider(), c.WatcherRegistry(), c.Logger()), nil
+		},
+	)
+
+	return s.(*service.ProjectRegistry)
 }
 
 func (c *container) Logger() *log.Logger {

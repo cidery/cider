@@ -20,6 +20,7 @@ func NewApplication() *server {
 	}
 
 	server.container.WatcherController().Bind(server.router)
+	server.container.ProjectController().Bind(server.router)
 
 	return server
 }

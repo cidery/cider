@@ -11,9 +11,10 @@ import (
 type WatcherRegistry struct {
 	timeProvider TimeProvider
 	logger       *log.Logger
-	watchers     map[string]*model.Watcher
-	targetMap    map[string]string
-	mu           *sync.Mutex
+
+	watchers  map[string]*model.Watcher
+	targetMap map[string]string
+	mu        *sync.Mutex
 }
 
 func NewWatcherRegistry(timeProvider TimeProvider, logger *log.Logger) *WatcherRegistry {
@@ -24,6 +25,16 @@ func NewWatcherRegistry(timeProvider TimeProvider, logger *log.Logger) *WatcherR
 		targetMap:    make(map[string]string),
 		mu:           &sync.Mutex{},
 	}
+}
+
+func (wr *WatcherRegistry) GetWatcher(id uuid.UUID) (*model.Watcher, error) {
+	watcher, found := wr.watchers[id.String()]
+
+	if false == found {
+		return nil, errors.NewWatcherNotRegisteredError(id)
+	}
+
+	return watcher, nil
 }
 
 func (wr *WatcherRegistry) RegisterWatcher(id uuid.UUID, class, scope string) error {

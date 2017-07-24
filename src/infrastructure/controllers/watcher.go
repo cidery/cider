@@ -6,6 +6,7 @@ import (
 	"github.com/cidery/cider/src/infrastructure/payload/request"
 	"github.com/cidery/cider/src/domain/service"
 	"encoding/json"
+	"net/http"
 )
 
 type WatcherController struct {
@@ -26,18 +27,18 @@ func (w *WatcherController) watchersRegister(c *gin.Context) {
 	decoder := json.NewDecoder(c.Request.Body)
 
 	if err := decoder.Decode(&r); nil != err {
-		c.JSON(400, response.NewErrorResponse(err))
+		c.JSON(http.StatusBadRequest, response.NewErrorResponse(err))
 		return
 	}
 
 	if err := w.registry.RegisterWatcher(r.Id, r.Class, r.Scope); nil != err {
-		c.JSON(500, response.NewErrorResponse(err))
+		c.JSON(http.StatusInternalServerError, response.NewErrorResponse(err))
 		return
 	}
 
-	c.JSON(200, response.NewEmptyResponse())
+	c.JSON(http.StatusCreated, response.NewEmptyResponse())
 }
 
 func (w *WatcherController) watchersList(c *gin.Context) {
-	c.JSON(200, response.NewWatcherListResponse(w.registry.Watchers()))
+	c.JSON(http.StatusOK, response.NewWatcherListResponse(w.registry.Watchers()))
 }
