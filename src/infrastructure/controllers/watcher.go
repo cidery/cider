@@ -23,7 +23,7 @@ func (w *WatcherController) Bind(engine *gin.Engine) {
 }
 
 func (w *WatcherController) watchersRegister(c *gin.Context) {
-	r := request.WatcherRegisterRequest{}
+	r := request.ListenerRegisterRequest{}
 	decoder := json.NewDecoder(c.Request.Body)
 
 	if err := decoder.Decode(&r); nil != err {

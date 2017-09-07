@@ -1,17 +1,17 @@
 package model
 
 type Project struct {
-	name    string
-	locator string
-	watcher *Watcher
-	targets []BuildTarget
+	name     string
+	locator  string
+	listener *Listener
+	targets  []BuildTarget
 }
 
-func NewProject(name, locator string, watcher *Watcher, targets []BuildTarget) *Project {
+func NewProject(name, locator string, listener *Listener, targets []BuildTarget) *Project {
 	return &Project{
 		name,
 		locator,
-		watcher,
+		listener,
 		targets,
 	}
 }

@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Agent struct {
+type Worker struct {
 	Type         string
 	Target       string
 	RegisteredAt time.Time
