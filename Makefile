@@ -13,7 +13,7 @@ check: prepare_metalinter
 build: clean
 	CGO_ENABLED=0 GOOS=${GOOS} go build \
 		-ldflags "-X main.version=${RELEASE} -X main.commit=${COMMIT} -X main.buildTime=${BUILD_TIME}" \
-		-o build/${GOOS}/${APP} cmd/server/main.go
+		-o build/${GOOS}/${APP} cmd/cider-server/main.go
 
 .PHONY: clean
 clean:
@@ -25,9 +25,7 @@ HAS_METALINTER := $(shell command -v gometalinter;)
 
 .PHONY: gen
 gen: prepare_swagger
-	swagger generate server -f spec/swagger.json -A cider \
-	    -t src/infrastructure \
-	    -s ../../cmd
+	swagger generate server -f spec/swagger.json -A cider -t src/api --exclude-main
 
 .PHONY: vendor
 vendor: prepare_dep

@@ -1,3 +1,5 @@
 /build
 /vendor
+/src/api
+!/src/api/.gitkeep
 !/vendor/vendor.json
